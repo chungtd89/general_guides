@@ -1,0 +1,63 @@
+====Installing TensorFlow with Nvidia GTX 1060 GPU in Ubuntu 20.04
+
+====Hardware
+Msi steelseries GP63-Leopard-8RE with Nvidia GTX 1060 graphic card
+
+====Installing Ubuntu 20.04
+
+When installing Ubuntu (dual boot with Windows), make sure to select the installation of external drivers with minimal system installation.
+
+Then Nvidia driver will be automatically installed.
+
+After installing Anaconda, nvidia-smi can be run successfully.
+
+(base) john@john-GP63-Leopard-8RE:~/Desktop$ nvidia-smi
+Tue Feb  2 23:54:33 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 440.100      Driver Version: 440.100      CUDA Version: 10.2     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  GeForce GTX 1060    Off  | 00000000:01:00.0 Off |                  N/A |
+| N/A   49C    P0    26W /  N/A |    259MiB /  6078MiB |      1%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|    0      1030      G   /usr/lib/xorg/Xorg                            45MiB |
+|    0      2034      G   /usr/lib/xorg/Xorg                            72MiB |
+|    0      2316      G   /usr/bin/gnome-shell                         130MiB |
++-----------------------------------------------------------------------------+
+
+====Install Anaconda
+https://www.anaconda.com/products/individual/download-success
+bash Anaconda3-2020.11-Linux-x86_64.sh
+
+====Install TensorFlow
+https://docs.anaconda.com/anaconda/user-guide/tasks/tensorflow/
+CPU-only TensorFlow
+	conda create -n tf tensorflow
+	conda activate tf
+
+GPU TensorFlow
+	conda create -n tf-gpu tensorflow-gpu
+	conda activate tf-gpu
+
+====Test TensorFlow
+	conda activate tf-gpu
+
+	python
+
+	import tensorflow as tf
+	if tf.test.gpu_device_name():
+		print('Default GPU Device: {}'.format(tf.test.gpu_device_name()))
+	else:
+		print("Please install GPU version of TF")
+		
+or
+		
+	assert tf.test.is_gpu_available()
+	assert tf.test.is_built_with_cuda()
